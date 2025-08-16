@@ -1,2 +1,6 @@
 .venv/*
 .vscode/*
+*.whl
+my_packages/dist/*
+my_packages/build/*
+my_packages/*.egg-info/*
