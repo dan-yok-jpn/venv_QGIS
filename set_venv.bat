@@ -36,34 +36,27 @@ exit %option% 1
 
 :hasPython
 
-call :genBat > tmp.bat
+> tmp.bat (
+    echo.@echo off
+    echo."%PYTHONHOME%\python" -m venv --system-site-packages ^^
+    echo.--symlinks --without-pip --clear .venv
+) 
 powershell Start-Process tmp.bat -Verb runas -Wait
-del tmp.bat
 
 mkdir .vscode
-call :genJson > .vscode\settings.json
+> .vscode\settings.json (
+    echo.{
+    echo."python.defaultInterpreterPath": ".venv\\Scripts\\python.exe",
+    echo."python.terminal.activateEnvironment": true
+    echo.}
+)
 
 if "%1"=="" (
     if exist requirements.txt (
         call .venv\Scripts\activate.bat
-        @REM python -m pip install --upgrade pip
         python -m pip install -r requirements.txt 2>nul
         call .venv\Scripts\deactivate.bat
     )
 )
-goto :eof
 
-:genBat
-    echo @echo off
-    echo cd "%~dp0"
-    echo echo.
-    echo echo #############################################################
-    echo echo ## Now Create a Virtual Environment. Please Wait a Minute. ##
-    echo echo #############################################################
-    echo "%PYTHONHOME%\python" -m venv --system-site-packages --symlinks --without-pip --clear .venv
-    @REM echo "%PYTHONHOME%\python" -m venv --system-site-packages --symlinks --clear .venv
-    exit /b
-
-:genJson
-    echo {"python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe"}
-    exit /b
+del tmp.bat
