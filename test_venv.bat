@@ -14,7 +14,6 @@ if not exist .venv (
         if not exist %%i (
             rem reset virtual environment
             rmdir /s /q .venv
-            rmdir /s /q .vscode
             call set_venv.bat 1
             set set_now=TRUE
         )

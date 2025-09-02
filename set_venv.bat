@@ -43,12 +43,14 @@ exit %option% 1
 ) 
 powershell Start-Process tmp.bat -Verb runas -Wait
 
-mkdir .vscode
-> .vscode\settings.json (
-    echo.{
-    echo."python.defaultInterpreterPath": ".venv\\Scripts\\python.exe",
-    echo."python.terminal.activateEnvironment": true
-    echo.}
+if not exist .vscode (
+    mkdir .vscode
+    > .vscode\settings.json (
+        echo.{
+        echo."python.defaultInterpreterPath": ".venv\\Scripts\\python.exe",
+        echo."python.terminal.activateEnvironment": true
+        echo.}
+    )
 )
 
 if "%1"=="" (
