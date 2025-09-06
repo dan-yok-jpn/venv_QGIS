@@ -36,12 +36,15 @@ exit %option% 1
 
 :hasPython
 
-> tmp.bat (
-    echo.@echo off
-    echo."%PYTHONHOME%\python" -m venv --system-site-packages ^^
-    echo.--symlinks --without-pip --clear .venv
-) 
-powershell Start-Process tmp.bat -Verb runas -Wait
+@REM > tmp.bat (
+@REM     echo.@echo off
+@REM     echo."%PYTHONHOME%\python" -m venv --system-site-packages ^^
+@REM     echo.--symlinks --without-pip --clear .venv
+@REM ) 
+@REM powershell Start-Process tmp.bat -Verb runas -Wait
+
+"%PYTHONHOME%"\python -m venv --system-site-packages ^
+    --without-pip --clear .venv
 
 if not exist .vscode (
     mkdir .vscode
